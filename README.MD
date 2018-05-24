@@ -1,4 +1,4 @@
-# OpenVPN-Mangagement #
+### OpenVPN-Mangagement ###
 
 Copyright (C) 2018  Georg Schmidt <gs-develop@gs-sys.de>  
 GPL 3.0
@@ -9,7 +9,8 @@ GPL 3.0
     GNU General Public License for more details.
 
 ---
-Usage:
+
+# Usage #
 
     auth-user-pass-verify /etc/openvpn/script/login.sh via-env
     script-security 3 system
@@ -18,7 +19,19 @@ Usage:
 
 ---
 
-Requirements:
+# Setup #
+
+    /etc/openvpn/script/OpenvpnLogin.jar add <username> <password>
+
+# Requirements #
+
+    # Files
+    /etc/openvpn/script/OpenvpnLogin.jar
+    /etc/openvpn/script/connect.sh
+    /etc/openvpn/script/disconnect.sh
+    /etc/openvpn/script/login.sh
+
+---
 
     # to write vpnuser.db connect and disconnect to database:
     chmod 707 /etc/openvpn/script/
