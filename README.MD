@@ -9,12 +9,13 @@ GPL 3.0
     GNU General Public License for more details.
 
 ---
+Usage:
 
     auth-user-pass-verify /etc/openvpn/script/login.sh via-env
 
 ---
 
-Future (not implemented yet)
+Future (not implemented yet):
 
     script-security 3 system
     client-connect /etc/openvpn/script/connect.sh
