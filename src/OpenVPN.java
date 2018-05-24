@@ -1,8 +1,3 @@
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.*;
-import java.util.Map;
-
 /*
     Copyright (C) 2018  Georg Schmidt <gs-develop@gs-sys.de>
 
@@ -19,6 +14,15 @@ import java.util.Map;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+// https://docs.spring.io/spring-security/site/docs/4.2.4.RELEASE/apidocs/org/springframework/security/crypto/bcrypt/BCryptPasswordEncoder.html
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.*;
+import java.util.Map;
+
 
 public class OpenVPN {
 
@@ -82,7 +86,8 @@ public class OpenVPN {
         try {
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, username);
-            pstmt.setString(2, password);
+            BCryptPasswordEncoder p = new BCryptPasswordEncoder(10);
+            pstmt.setString(2, p.encode(password));
             pstmt.executeUpdate();
             pstmt.close();
             return true;
@@ -96,13 +101,14 @@ public class OpenVPN {
     public static boolean loginUser(String username, String password) {
 
         try {
-            String sql = "SELECT USERNAME,PASSWORD FROM USER WHERE USERNAME = ? AND PASSWORD = ?";
+            String sql = "SELECT USERNAME,PASSWORD FROM USER WHERE USERNAME = ?";
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, username);
-            pstmt.setString(2, password);
             ResultSet res = pstmt.executeQuery();
 
-            boolean exit = !res.isClosed() && res.next() && res.getString(1).equals(username) && res.getString(2).equals(password);
+            BCryptPasswordEncoder p = new BCryptPasswordEncoder(10);
+
+            boolean exit = !res.isClosed() && res.next() && res.getString(1).equals(username) && p.matches(password, res.getString(2));
             pstmt.close();
             return exit;
         }catch (SQLException e)
@@ -119,7 +125,8 @@ public class OpenVPN {
             String sql = "INSERT OR REPLACE INTO USER (USERNAME,PASSWORD) VALUES (?, ?)";
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, username);
-            pstmt.setString(2, password);
+            BCryptPasswordEncoder p = new BCryptPasswordEncoder(10);
+            pstmt.setString(2, p.encode(password));
             pstmt.executeUpdate();
             pstmt.close();
             return true;
