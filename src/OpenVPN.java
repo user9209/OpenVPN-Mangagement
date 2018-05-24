@@ -28,6 +28,7 @@ public class OpenVPN {
 
     private static final String DB_FILE = "vpnuser.db";
     private static Connection c = null;
+    private static BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(14);
 
     public static boolean sqlOpen() {
         try {
@@ -86,8 +87,7 @@ public class OpenVPN {
         try {
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, username);
-            BCryptPasswordEncoder p = new BCryptPasswordEncoder(10);
-            pstmt.setString(2, p.encode(password));
+            pstmt.setString(2, bcrypt.encode(password));
             pstmt.executeUpdate();
             pstmt.close();
             return true;
@@ -106,9 +106,10 @@ public class OpenVPN {
             pstmt.setString(1, username);
             ResultSet res = pstmt.executeQuery();
 
-            BCryptPasswordEncoder p = new BCryptPasswordEncoder(10);
 
-            boolean exit = !res.isClosed() && res.next() && res.getString(1).equals(username) && p.matches(password, res.getString(2));
+
+            boolean exit = !res.isClosed() && res.next() && res.getString(1).equals(username) &&
+                           bcrypt.matches(password, res.getString(2));
             pstmt.close();
             return exit;
         }catch (SQLException e)
@@ -125,8 +126,7 @@ public class OpenVPN {
             String sql = "INSERT OR REPLACE INTO USER (USERNAME,PASSWORD) VALUES (?, ?)";
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, username);
-            BCryptPasswordEncoder p = new BCryptPasswordEncoder(10);
-            pstmt.setString(2, p.encode(password));
+            pstmt.setString(2, bcrypt.encode(password));
             pstmt.executeUpdate();
             pstmt.close();
             return true;
