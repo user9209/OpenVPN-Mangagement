@@ -18,6 +18,9 @@
 // https://docs.spring.io/spring-security/site/docs/4.2.4.RELEASE/apidocs/org/springframework/security/crypto/bcrypt/BCryptPasswordEncoder.html
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
@@ -26,9 +29,18 @@ import java.util.Map;
 
 public class OpenVPN {
 
-    private static final String DB_FILE = "vpnuser.db";
+    private static String DB_FILE;
+
+    static {
+        try {
+            DB_FILE = URLDecoder.decode(new File(OpenVPN.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getPath(), "UTF-8") + File.separator +  "vpnuser.db";
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static Connection c = null;
-    private static BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(14);
+    private static BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(12);
 
     public static boolean sqlOpen() {
         try {
