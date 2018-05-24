@@ -1,6 +1,6 @@
 # OpenVPN-Mangagement #
 
-Copyright (C) 2018  Georg Schmidt <gs-develop@gs-sys.de>  
+Copyright (C) 2018  Georg Schmidt < gs-develop@gs-sys.de >  
 GPL 3.0
 
     This program is distributed in the hope that it will be useful,
