@@ -85,6 +85,34 @@ public class OpenVPN {
             index = "CREATE UNIQUE INDEX idx_PASSWORD ON USER (PASSWORD);";
             stmt.executeUpdate(index);
             stmt.close();
+
+            stmt = c.createStatement();
+            sql = "CREATE TABLE IF NOT EXISTS CONNECT " +
+                    "(username       TEXT    NOT NULL, " +
+                    " common_name    TEXT    NOT NULL, " +
+                    " trusted_ip     TEXT    NULL, " +
+                    " trusted_ip6    TEXT    NULL, " +
+                    " trusted_port   TEXT    NOT NULL, " +
+                    " ifconfig_pool_remote_ip  TEXT    NOT NULL, " +
+                    " remote_port_1  TEXT    NOT NULL, " +
+                    " time_unix      TEXT    NOT NULL)";
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            stmt = c.createStatement();
+            sql = "CREATE TABLE IF NOT EXISTS DISCONNECT " +
+                    "(username       TEXT    NOT NULL, " +
+                    " common_name    TEXT    NOT NULL, " +
+                    " trusted_ip     TEXT    NULL, " +
+                    " trusted_ip6    TEXT    NULL, " +
+                    " trusted_port   TEXT    NOT NULL, " +
+                    " ifconfig_pool_remote_ip  TEXT    NOT NULL, " +
+                    " remote_port_1  TEXT    NOT NULL, " +
+                    " bytes_received TEXT    NULL, " +
+                    " bytes_sent     TEXT    NULL, " +
+                    " time_duration  TEXT    NOT NULL)";
+            stmt.executeUpdate(sql);
+            stmt.close();
         } catch ( Exception e ) {
             e.printStackTrace();
             return false;
@@ -100,6 +128,57 @@ public class OpenVPN {
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, username);
             pstmt.setString(2, bcrypt.encode(password));
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean connect(Map<String, String> env) {
+
+        String sql = "INSERT INTO CONNECT (username, common_name, trusted_ip, trusted_ip6, trusted_port," +
+                " ifconfig_pool_remote_ip,remote_port_1, time_unix) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pstmt = c.prepareStatement(sql);
+            pstmt.setString(1, env.getOrDefault("username","failed"));
+            pstmt.setString(2, env.getOrDefault("common_name","failed"));
+            pstmt.setString(3, env.getOrDefault("trusted_ip","no IPv4"));
+            pstmt.setString(4, env.getOrDefault("trusted_ip6","no IPv6"));
+            pstmt.setString(5, env.getOrDefault("trusted_port","failed"));
+            pstmt.setString(6, env.getOrDefault("ifconfig_pool_remote_ip","failed"));
+            pstmt.setString(7, env.getOrDefault("remote_port_1","failed"));
+            pstmt.setString(8, env.getOrDefault("time_unix","failed"));
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean disconnect(Map<String, String> env) {
+
+        String sql = "INSERT INTO DISCONNECT (username, common_name, trusted_ip, trusted_ip6, trusted_port," +
+                " ifconfig_pool_remote_ip, remote_port_1, bytes_received, bytes_sent, time_duration)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pstmt = c.prepareStatement(sql);
+            pstmt.setString(1, env.getOrDefault("username","failed"));
+            pstmt.setString(2, env.getOrDefault("common_name","failed"));
+            pstmt.setString(3, env.getOrDefault("trusted_ip","no IPv4"));
+            pstmt.setString(4, env.getOrDefault("trusted_ip6","no IPv6"));
+            pstmt.setString(5, env.getOrDefault("trusted_port","failed"));
+            pstmt.setString(6, env.getOrDefault("ifconfig_pool_remote_ip","0"));
+            pstmt.setString(7, env.getOrDefault("remote_port_1","0"));
+            pstmt.setString(8, env.getOrDefault("bytes_received","failed"));
+            pstmt.setString(9, env.getOrDefault("bytes_sent","failed"));
+            pstmt.setString(10, env.getOrDefault("time_unix","failed"));
             pstmt.executeUpdate();
             pstmt.close();
             return true;
@@ -161,9 +240,81 @@ public class OpenVPN {
             {
                 sb.append(res.getString(1)).append("\n");
             }
-            sb.setLength(sb.length() - 1);
+            int l = sb.length();
+            if(l == 0)
+            {
+                sb.append("No entries!");
+            }
+            else {
+                sb.setLength(l - 1);
+            }
 
             stmt.close();
+            return sb.toString();
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String history() {
+
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            String sql = "SELECT * FROM CONNECT";
+            Statement stmt = c.createStatement();
+            ResultSet res = stmt.executeQuery(sql);
+
+            sql = "SELECT * FROM DISCONNECT";
+            Statement stmtD = c.createStatement();
+            ResultSet resD = stmtD.executeQuery(sql);
+
+
+
+
+            while(res.next())
+            {
+                sb.append("username\tcommon_name\ttrusted_ip\ttrusted_ip6\ttrusted_port\t" +
+                        "ifconfig_pool_remote_ip\tremote_port_1\ttime_unix\n");
+                sb.append(res.getString(1)).append("\t")
+                        .append(res.getString(2)).append("\t")
+                        .append(res.getString(3)).append("\t")
+                        .append(res.getString(4)).append("\t")
+                        .append(res.getString(5)).append("\t")
+                        .append(res.getString(6)).append("\t")
+                        .append(res.getString(7)).append("\t")
+                        .append(res.getString(8))
+                        .append("\n");
+
+                if(resD.next()) {
+                    sb.append("username\tcommon_name\ttrusted_ip\ttrusted_ip6\ttrusted_port\tifconfig_pool_remote_ip\t" +
+                            "remote_port_1\tbytes_received\tbytes_sent\ttime_duration\n");
+                    sb.append(resD.getString(1)).append("\t")
+                            .append(resD.getString(2)).append("\t")
+                            .append(resD.getString(3)).append("\t")
+                            .append(resD.getString(4)).append("\t")
+                            .append(resD.getString(5)).append("\t")
+                            .append(resD.getString(6)).append("\t")
+                            .append(resD.getString(7)).append("\t")
+                            .append(resD.getString(8)).append("\t")
+                            .append(resD.getString(9)).append("\t")
+                            .append(resD.getString(10))
+                            .append("\n\n");
+                }
+            }
+            int l = sb.length();
+            if(l == 0)
+            {
+                sb.append("No entries!");
+            }
+            else {
+                sb.setLength(l - 2);
+            }
+
+            stmt.close();
+
             return sb.toString();
         }catch (SQLException e)
         {
@@ -189,21 +340,41 @@ public class OpenVPN {
 
         if(args.length == 1)
         {
-            if (args[0].equals("list"))
-            {
-                System.out.println(listUser());
-            }
-            else {
+            switch (args[0]) {
+                case "list":
+                    System.out.println(listUser());
+                    break;
+                case "log":
+                    System.out.println(history());
+                    break;
+                case "connect":
+                    Map<String, String> env = System.getenv();
+                    if(connect(env)) {
+                        exitCode = 0;
+                    }
+                    break;
+                case "disconnect":
+                    Map<String, String> env2 = System.getenv();
+                    if(disconnect(env2)) {
+                        exitCode = 0;
+                    }
+                    break;
+                default:
 
-                System.out.println("Copyright (c) 2018 Georg Schmidt");
-                System.out.println("GPL 3.0: WITHOUT ANY WARRANTY");
-                System.out.println("Thanks to org.xerial.sqlite-jdbc: Apache License, Version 2.0\n");
-                System.out.println("# Add a user:");
-                System.out.println("xyz.jar add <username> <password>");
-                System.out.println("# Update a user:");
-                System.out.println("xyz.jar update <username> <password>");
-                System.out.println("# Login:");
-                System.out.println("xyz.jar");
+                    System.out.println("Copyright (c) 2018 Georg Schmidt");
+                    System.out.println("GPL 3.0: WITHOUT ANY WARRANTY");
+                    System.out.println("Thanks to org.xerial.sqlite-jdbc: Apache License, Version 2.0\n");
+                    System.out.println("# Add a user:");
+                    System.out.println("xyz.jar add <username> <password>");
+                    System.out.println("# Update a user:");
+                    System.out.println("xyz.jar update <username> <password>");
+                    System.out.println("# Login:");
+                    System.out.println("xyz.jar");
+                    System.out.println("# Connect infos:");
+                    System.out.println("xyz.jar log");
+                    System.out.println("xyz.jar connect");
+                    System.out.println("xyz.jar disconnect");
+                    break;
             }
         }
         else if(args.length == 3)

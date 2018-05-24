@@ -12,11 +12,28 @@ GPL 3.0
 Usage:
 
     auth-user-pass-verify /etc/openvpn/script/login.sh via-env
-
----
-
-Future (not implemented yet):
-
     script-security 3 system
     client-connect /etc/openvpn/script/connect.sh
     client-disconnect /etc/openvpn/script/disconnect.sh
+
+---
+
+Requirements:
+
+    # to write vpnuser.db connect and disconnect to database:
+    chmod 707 /etc/openvpn/script/
+
+---
+
+    # not enough:
+    chmod 606 /etc/openvpn/script/vpnuser.db
+
+---
+
+    # other scripts
+    # must be runnable by everybody
+
+    chmod 705 /etc/openvpn/script/*.sh
+
+
+
