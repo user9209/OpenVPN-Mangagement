@@ -1,4 +1,4 @@
-### OpenVPN-Mangagement ###
+# OpenVPN-Mangagement #
 
 Copyright (C) 2018  Georg Schmidt <gs-develop@gs-sys.de>  
 GPL 3.0
@@ -10,7 +10,7 @@ GPL 3.0
 
 ---
 
-# Usage #
+## Usage ##
 
     auth-user-pass-verify /etc/openvpn/script/login.sh via-env
     script-security 3 system
@@ -19,11 +19,11 @@ GPL 3.0
 
 ---
 
-# Setup #
+## Setup ##
 
     /etc/openvpn/script/OpenvpnLogin.jar add <username> <password>
 
-# Requirements #
+## Requirements ##
 
     # Files
     /etc/openvpn/script/OpenvpnLogin.jar
