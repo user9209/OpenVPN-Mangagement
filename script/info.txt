@@ -1,0 +1,5 @@
+Environmental Variables 2.3
+https://community.openvpn.net/openvpn/wiki/Openvpn23ManPage#Environmental%20Variables
+
+Environmental Variables 2.4
+https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage#Environmental%20Variables
