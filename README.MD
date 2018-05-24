@@ -8,12 +8,12 @@ GPL 3.0
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-This software allows you to manage password authentication using OpenVPN.
+This software allows you to manage password authentication using OpenVPN.  
 Passwords are securely stored as BCrypt-Hashes.
 
-WARNING: If using "user nobody" every user id on the system can change any passwords!
-         The following config uses this unsecure way with "user nobody"!
-         Passwords can only hardly stolen as the BCrypt-Hash has to be hacked.
+WARNING: If using "user nobody" every user id on the system can change any passwords!  
+         The following config uses this unsecure way with "user nobody"!  
+         Passwords can only hardly stolen as the BCrypt-Hash has to be hacked.  
 
 ---
 
