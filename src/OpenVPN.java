@@ -197,8 +197,6 @@ public class OpenVPN {
             pstmt.setString(1, username);
             ResultSet res = pstmt.executeQuery();
 
-
-
             boolean exit = !res.isClosed() && res.next() && res.getString(1).equals(username) &&
                            bcrypt.matches(password, res.getString(2));
             pstmt.close();
@@ -270,9 +268,6 @@ public class OpenVPN {
             sql = "SELECT * FROM DISCONNECT";
             Statement stmtD = c.createStatement();
             ResultSet resD = stmtD.executeQuery(sql);
-
-
-
 
             while(res.next())
             {
@@ -404,9 +399,7 @@ public class OpenVPN {
             Map<String, String> env = System.getenv();
             /*
             for (String envName : env.keySet()) {
-                System.out.format("%s=%s%n",
-                        envName,
-                        env.get(envName));
+                System.out.format("%s=%s%n", envName, env.get(envName));
             }
             */
 
@@ -426,5 +419,4 @@ public class OpenVPN {
         sqlClose();
         System.exit(exitCode);
     }
-
 }
