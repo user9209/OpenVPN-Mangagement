@@ -11,12 +11,12 @@ GPL 3.0
 This software allows you to manage password authentication using OpenVPN.  
 Passwords are securely stored as BCrypt-Hashes.
 
-    ########################################################################################  
-    # WARNING:                                                                             #  
-    #         If using "user nobody" every user id on the system can change any passwords! #  
-    #         The following config uses this unsecure way with "user nobody"!              #  
-    #         Passwords can only hardly stolen as the BCrypt-Hash has to be hacked.        #  
-    ########################################################################################
+    ##############################################################################################
+    # WARNING:                                                                                   #
+    #         If using "user nobody" every user id on the system can change any log information! #
+    #         The following config uses this unsecure way with "user nobody"!                    #
+    #         Passwords can only hardly stolen as the BCrypt-Hash has to be hacked.              #
+    ##############################################################################################
 
 ---
 
@@ -28,6 +28,27 @@ Passwords are securely stored as BCrypt-Hashes.
     client-disconnect /etc/openvpn/script/disconnect.sh
 
 ---
+
+    # Add a user:
+    xyz.jar add <username> <password>
+
+    # Update a user:
+    xyz.jar update <username> <password>
+
+    # Login:
+    xyz.jar login
+
+    # Connect history:
+    xyz.jar history
+
+    # Connect to VPN
+    xyz.jar connect
+
+    # Disconnect to VPN
+    xyz.jar disconnect
+
+    # Delete a user:
+    xyz.jar update <username> <random data (size 22+)>
 
 ## Setup ##
 
@@ -43,20 +64,22 @@ Passwords are securely stored as BCrypt-Hashes.
 
 ---
 
-    # to write vpnuser.db connect and disconnect to database:
-    chmod 707 /etc/openvpn/script/
+User datebase accessable for anybody! Passwords protected by bcrypt.
+
+    chown root /etc/openvpn/script/vpnuser.db
+    chmod 644 /etc/openvpn/script/vpnuser.db
+
+To write vpnlog.db connect and disconnect to database:
+
+    chmod 777 /etc/openvpn/script/
+
+Not enough for writing:
+
+    chmod 666 /etc/openvpn/script/vpnlog.db
 
 ---
 
-    # not enough:
-    chmod 606 /etc/openvpn/script/vpnuser.db
+Other scripts
+must be runnable by everybody
 
----
-
-    # other scripts
-    # must be runnable by everybody
-
-    chmod 705 /etc/openvpn/script/*.sh
-
-
-
+    chmod 755 /etc/openvpn/script/*.sh
