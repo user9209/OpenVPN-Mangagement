@@ -29,11 +29,17 @@ Passwords are securely stored as BCrypt-Hashes.
 
 ---
 
+    # List all user:
+    xyz.jar list
+
     # Add a user:
     xyz.jar add <username> <password>
 
     # Update a user:
     xyz.jar update <username> <password>
+
+    # Delete a user:
+    xyz.jar update <username> <random data (size 22+)>
 
     # Login:
     xyz.jar login
@@ -46,9 +52,6 @@ Passwords are securely stored as BCrypt-Hashes.
 
     # Disconnect to VPN
     xyz.jar disconnect
-
-    # Delete a user:
-    xyz.jar update <username> <random data (size 22+)>
 
 ## Setup ##
 

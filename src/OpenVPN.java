@@ -146,9 +146,13 @@ public class OpenVPN extends ConncetDisconnectModule {
                   "Copyright (c) 2018 Georg Schmidt\n"
                 + "GPL 3.0: WITHOUT ANY WARRANTY\n"
                 + "Thanks to org.xerial.sqlite-jdbc: Apache License, Version 2.0\n\n"
+                + "# List all user:\n"
+                + "xyz.jar list\n\n"
                 + "# Add a user:\n"
                 + "xyz.jar add <username> <password>\n\n"
                 + "# Update a user:\n"
+                + "# Delete a user:\n"
+                + "xyz.jar update <username> <random data (size 22+)>\n"
                 + "xyz.jar update <username> <password>\n\n"
                 + "# Login:\n"
                 + "xyz.jar login\n\n"
@@ -158,8 +162,6 @@ public class OpenVPN extends ConncetDisconnectModule {
                 + "xyz.jar connect\n\n"
                 + "# Disconnect to VPN\n"
                 + "xyz.jar disconnect\n\n"
-                + "# Delete a user:\n"
-                + "xyz.jar update <username> <random data (size 22+)>\n"
         );
     }
 
