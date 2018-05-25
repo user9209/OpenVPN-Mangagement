@@ -46,6 +46,9 @@ public class ConncetDisconnectModule {
     }
 
     public static boolean setupSQLConDiscon() {
+
+        // TODO: Change file permissions to 666
+
         try {
             Statement stmt = cCD.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS CONNECT " +

@@ -53,6 +53,7 @@ public class OpenVPN extends ConncetDisconnectModule {
 
             sqlSetup();
             setupSQLConDiscon();
+            createScripts();
         }
 
         if(args.length == 1)
@@ -141,6 +142,11 @@ public class OpenVPN extends ConncetDisconnectModule {
         System.exit(exitCode);
     }
 
+    private static void createScripts() {
+        // TODO: Create scripts
+        // TODO: Change file permissions to 755
+    }
+
     private static void help() {
         System.out.println(
                   "Copyright (c) 2018 Georg Schmidt\n"
@@ -194,6 +200,9 @@ public class OpenVPN extends ConncetDisconnectModule {
 
 
     public static boolean sqlSetup() {
+
+        // TODO: Change file permissions to 644
+
         try {
             Statement stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS USER " +
