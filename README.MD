@@ -118,3 +118,16 @@ This is plant in a future release for debian.
 
 Currently no. This is plant in a future release for openssl on debian.
 At windows you may like XCA.
+
+
+
+## Problems
+
+### Error ``script-security 3 system`` unknown
+
+Fix, use only:
+
+````
+script-security 3
+````
+
