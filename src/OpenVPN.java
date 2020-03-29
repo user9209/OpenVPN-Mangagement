@@ -161,7 +161,7 @@ public class OpenVPN extends ConncetDisconnectModule {
                 + "OpenvpnLogin.jar update <username> <random data (size 22+)>\n"
                 + "OpenvpnLogin.jar update <username> <password>\n\n"
                 + "# Login:\n"
-                + "OpenvpnLogin.jar login\n\n"
+                + "OpenvpnLogin.jar\n\n"
                 + "# Connect history:\n"
                 + "OpenvpnLogin.jar history\n\n"
                 + "# Connect to VPN\n"

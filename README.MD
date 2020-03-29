@@ -31,31 +31,31 @@ Passwords are securely stored as BCrypt-Hashes.
 
     # List all user:
     OpenvpnLogin.jar list
-
+    
     # Add a user:
     OpenvpnLogin.jar add <username> <password>
-
+    
     # Update a user:
     OpenvpnLogin.jar update <username> <password>
-
+    
     # Delete a user:
     OpenvpnLogin.jar update <username> <random data (size 22+)>
-
+    
     # Login:
-    OpenvpnLogin.jar login
-
+    OpenvpnLogin.jar
+    
     # Connect history:
     OpenvpnLogin.jar history
-
+    
     # Connect to VPN
     OpenvpnLogin.jar connect
-
+    
     # Disconnect to VPN
     OpenvpnLogin.jar disconnect
 
 ## Setup ##
 
-    /etc/openvpn/script/OpenvpnLogin.jar add <username> <password>
+    java -jar /etc/openvpn/script/OpenvpnLogin.jar add <username> <password>
 
 ## Requirements ##
 
