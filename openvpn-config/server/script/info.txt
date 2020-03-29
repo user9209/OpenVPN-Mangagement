@@ -1,0 +1,34 @@
+Environmental Variables 2.3
+https://community.openvpn.net/openvpn/wiki/Openvpn23ManPage#Environmental%20Variables
+
+Environmental Variables 2.4
+https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage#Environmental%20Variables
+
+
+
+
+
+
+
+# con
+username
+common_name
+trusted_ip
+trusted_ip6
+trusted_port
+ifconfig_pool_remote_ip
+remote_port_1
+time_unix
+
+
+# disc
+username
+common_name
+trusted_ip
+trusted_ip6
+trusted_port
+ifconfig_pool_remote_ip
+remote_port_1
+bytes_received
+bytes_sent
+time_duration
